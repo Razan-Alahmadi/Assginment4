@@ -1,0 +1,66 @@
+<div class="container mt-4">
+  <!-- Back Button -->
+  <button class="btn btn-secondary mb-3" (click)="goBack()">
+    <i class="bi bi-arrow-left"></i> Back
+  </button>
+
+  <h2 class="text-center mb-4">Orders</h2>
+
+  <!-- Loading State -->
+  <div *ngIf="loading$ | async" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading orders...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error$ | async as error" class="alert alert-danger text-center">
+    <strong>Error:</strong> {{ error.message }}
+  </div>
+
+  <!-- Orders List -->
+  <div *ngIf="orders$ | async as orders">
+    <div *ngFor="let order of orders" class="card mb-4 shadow-sm">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">Order ID: {{ order.id }}</h5>
+        <button class="btn btn-danger btn-sm" (click)="deleteOrder(order.id)">
+          <i class="bi bi-trash"></i> Delete
+        </button>
+      </div>
+      <div class="card-body">
+        <p class="card-text"><strong>Total Price:</strong> {{ order.totalPrice | currency }}</p>
+        <h6 class="mb-3">Items:</h6>
+        <div *ngFor="let item of order.items" class="mb-2">
+          <div class="d-flex justify-content-between align-items-center">
+            <span>{{ item.productName }} (x{{ item.quantity }})</span>
+            <span class="text-muted">{{ item.unitPrice | currency }}</span>
+          </div>
+          <!-- Edit Form -->
+          <div *ngIf="item.editing" class="mt-2">
+            <input
+              type="number"
+              [(ngModel)]="item.quantity"
+              class="form-control form-control-sm"
+              min="1"
+            />
+            <button class="btn btn-success btn-sm mt-2" (click)="saveOrderItem(order, item)">
+              Save
+            </button>
+            <button class="btn btn-secondary btn-sm mt-2 ms-2" (click)="cancelEdit(order, item)">
+              Cancel
+            </button>
+          </div>
+          <!-- Edit Button -->
+          <button
+            *ngIf="!item.editing"
+            class="btn btn-warning btn-sm"
+            (click)="startEdit(order, item)"
+          >
+            <i class="bi bi-pencil"></i> Edit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
