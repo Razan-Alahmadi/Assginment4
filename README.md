@@ -78,11 +78,6 @@ git clone https://github.com/Razan-Alahmadi/Assginment4.git
 
 #### Step 1: Configure the Database  
 - Ensure **MySQL** is running and update the **connection string** in `appsettings.json`.  
-- Example MySQL connection string:  
-  ```json
-  "ConnectionStrings": {
-    "DefaultConnection": "server=localhost;port=3306;database=ecommerce_db;user=root;password=yourpassword;"
-  }
   ```  
 
 #### Step 2: Apply Database Migrations  
